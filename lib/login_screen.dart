@@ -5,6 +5,8 @@ import 'package:flutter_application_1/vehicle_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

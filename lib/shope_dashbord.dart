@@ -52,6 +52,8 @@ class ShopkeeperDashboard extends StatelessWidget {
   {"user": "Lily Simmons", "vehicle": "Truck", "issue": "Emergency Brake Stuck", "distance": "4.2 km"},
 ];
 
+   ShopkeeperDashboard({super.key});
+
 
   @override
   Widget build(BuildContext context) {

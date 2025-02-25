@@ -239,6 +239,8 @@ class RepairShopsScreen extends StatelessWidget {
     },
   ];
 
+  RepairShopsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

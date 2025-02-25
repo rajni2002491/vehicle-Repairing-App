@@ -3,7 +3,7 @@ import 'bokking_system.dart';
 
 class MapScreen extends StatelessWidget {
   final String selectedVehicle;
-  MapScreen({this.selectedVehicle = 'defaultVehicle'});
+  const MapScreen({super.key, this.selectedVehicle = 'defaultVehicle'});
 
   // Function to get image based on selected vehicle
   String getVehicleImage(String vehicle) {
