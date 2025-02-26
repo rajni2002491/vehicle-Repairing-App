@@ -107,22 +107,20 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
             SizedBox(height: 10),
-            Container(
-              child: Expanded(
-                child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                    target: myCurrentLocation,
-                    zoom: 14.4746,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: MarkerId("Marker Id"),
-                      position: myCurrentLocation,
-                      draggable: true,
-                      onDragEnd: (value) {},
-                    ),
-                  },
+            Expanded(
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: myCurrentLocation,
+                  zoom: 14.4746,
                 ),
+                markers: {
+                  Marker(
+                    markerId: MarkerId("Marker Id"),
+                    position: myCurrentLocation,
+                    draggable: true,
+                    onDragEnd: (value) {},
+                  ),
+                },
               ),
             ),
           ],

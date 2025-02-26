@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/vehicle_screen.dart';
 import 'register_screen.dart';
+import 'Forgot_pass_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -68,12 +69,20 @@ class LoginScreen extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight, // Aligns text to the right
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Forgot Password?',
-                style: TextStyle(fontSize: 15, color: Colors.blue),
-              ),
-            ),
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgotPasswordScreen()),
+                    );
+                  },
+                  child: Text(
+                    'Forgot Password?',
+                    style: TextStyle(fontSize: 15, color: Colors.blue),
+                  ),
+                )),
           ),
           Center(
             child: SizedBox(
