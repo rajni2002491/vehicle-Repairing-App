@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'bokking_system.dart';
+import 'google_map.dart';
 
 class MapScreen extends StatelessWidget {
   final String selectedVehicle;
@@ -38,10 +39,12 @@ class MapScreen extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: 'Vehicle: $selectedVehicle ',
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 28, fontWeight: FontWeight.bold),
                           ),
                           WidgetSpan(
-                            child: Icon(Icons.favorite, color: Colors.red, size: 28),
+                            child: Icon(Icons.favorite,
+                                color: Colors.red, size: 28),
                           ),
                         ],
                       ),
@@ -57,28 +60,22 @@ class MapScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Container(
-                      height: 60,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
+                    ElevatedButton(
+                      onPressed: () {
+                        // Add your onPressed code here!
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GoogleMapScreen ()),
+                        );
+                      },
+                      child: Text('Open Map'),
+                     ),
+                       TextField(
                         decoration: InputDecoration(
                           hintText: "Search location...",
                           prefixIcon: Icon(Icons.search, color: Colors.blue),
                           border: InputBorder.none,
                         ),
-                      ),
                     ),
                     SizedBox(height: 20),
                     Row(
@@ -88,7 +85,8 @@ class MapScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => RepairShopsScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) => RepairShopsScreen()),
                             );
                           },
                           child: Text('Home'),
