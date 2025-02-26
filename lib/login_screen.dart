@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/vehicle_screen.dart';
 import 'register_screen.dart';
-import 'Forgot_pass_screen.dart';
+import 'forgotpass_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
