@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'bokking_system.dart';
-import 'google_map.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapScreen extends StatelessWidget {
+class MapScreen extends StatefulWidget {
   final String selectedVehicle;
   const MapScreen({super.key, this.selectedVehicle = 'defaultVehicle'});
+
+  @override
+  _MapScreenState createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  LatLng myCurrentLocation = const LatLng(22.8046, 86.2029);
 
   // Function to get image based on selected vehicle
   String getVehicleImage(String vehicle) {
@@ -18,7 +24,7 @@ class MapScreen extends StatelessWidget {
       case 'truck':
         return 'assets/truck_logo.png';
       default:
-        return 'assets/default_vehicle.png'; // Default image
+        return 'assets/default_vehicle.png';
     }
   }
 
@@ -30,78 +36,63 @@ class MapScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Vehicle: $selectedVehicle ',
-                            style: TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.bold),
-                          ),
-                          WidgetSpan(
-                            child: Icon(Icons.favorite,
-                                color: Colors.red, size: 28),
-                          ),
-                        ],
-                      ),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'Vehicle: ${widget.selectedVehicle} ',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  WidgetSpan(
+                    child: Icon(Icons.favorite, color: Colors.red, size: 28),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 250,
+              width: double.infinity,
+              color: Colors.blue,
+              child: Image.asset(
+                getVehicleImage(widget.selectedVehicle),
+                height: 100,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 10),
+            SizedBox(
+              height: 50,
+              child: Card(
+                color: const Color.fromARGB(255, 88, 163, 224),
+                  child: Text(
+                '   search Nearest Service Shopes   ',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              )),
+            ),
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Search location...",
+                prefixIcon: Icon(Icons.search, color: Colors.blue),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              child: Expanded(
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: myCurrentLocation,
+                    zoom: 14.4746,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: MarkerId("Marker Id"),
+                      position: myCurrentLocation,
+                      draggable: true,
+                      onDragEnd: (value) {},
                     ),
-                    Container(
-                      height: 300,
-                      width: double.infinity,
-                      color: Colors.blue,
-                      child: Image.asset(
-                        getVehicleImage(selectedVehicle), // Dynamic image
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Add your onPressed code here!
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GoogleMapScreen ()),
-                        );
-                      },
-                      child: Text('Open Map'),
-                     ),
-                       TextField(
-                        decoration: InputDecoration(
-                          hintText: "Search location...",
-                          prefixIcon: Icon(Icons.search, color: Colors.blue),
-                          border: InputBorder.none,
-                        ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RepairShopsScreen()),
-                            );
-                          },
-                          child: Text('Home'),
-                        ),
-                        OutlinedButton(
-                          onPressed: () {},
-                          child: Text('Work'),
-                        ),
-                        OutlinedButton(
-                          onPressed: () {},
-                          child: Text('Saved'),
-                        ),
-                      ],
-                    ),
-                  ],
+                  },
                 ),
               ),
             ),
