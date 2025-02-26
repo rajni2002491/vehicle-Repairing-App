@@ -90,7 +90,7 @@ class _MapScreenState extends State<MapScreen> {
                             backgroundColor: Colors.white),
                         child: Text(
                           "Find",
-                          style: TextStyle(color: Colors.blue, fontSize: 14),
+                          style: TextStyle(color: const Color.fromARGB(255, 6, 6, 6), fontSize: 14),
                         ),
                       ),
                     ],
