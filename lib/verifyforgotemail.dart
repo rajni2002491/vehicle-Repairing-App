@@ -1,59 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/verifyforgotemail.dart';
+import 'passresetconfirmation.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({super.key});
+class EmailVerification extends StatelessWidget {
+  const EmailVerification({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(16.0), // Increased padding
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Aligns children to the left
+          crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to left
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0), // Add padding
               child: Text(
-                'Forgot Password',
+                'Check your email',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left, // Aligns text within the Text widget
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                'Please enter your email to reset the password',
-                textAlign: TextAlign.left, // Aligns text within the Text widget
+                'Enter the five-digit code',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16),
               ),
             ),
-            SizedBox(height: 30),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Your Email',
-                textAlign: TextAlign.left, // Align text to the left
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Card(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email',
-                    border: OutlineInputBorder(),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly, 
+              children: List.generate(
+                5, 
+                (index) => SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: TextField(
+                    textAlign: TextAlign.center, 
+                    keyboardType: TextInputType.number, 
+                    maxLength: 1, 
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(), 
+                      counterText: "",
+                    ),
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              height: 40,
-            ),
+            SizedBox(height: 30,),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -63,12 +61,12 @@ class ForgotPasswordScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EmailVerification(),
+                        builder: (context) => ConfirmPassword(),
                       ),
                     );
                 },
                 child: Text(
-                  "Reset Password",
+                  "Verify Code",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
