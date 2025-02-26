@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'shope_dashbord.dart';
-
+import 'bokking_system.dart';
 class ServiceRequestScreen extends StatefulWidget {
   const ServiceRequestScreen({super.key});
 
@@ -33,7 +32,7 @@ class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
                  Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ShopkeeperDashboard()),
+                                builder: (context) => RepairShopsScreen()),
                           );
               },
               child: Text("Send Request"),

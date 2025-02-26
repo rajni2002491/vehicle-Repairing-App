@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'user_form.dart';
-
+import 'shope_dashbord.dart';
 class RepairShopsScreen extends StatelessWidget {
   final List<Map<String, dynamic>> shops = [
     {
@@ -262,7 +261,7 @@ class RepairShopsScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ServiceRequestScreen()),
+                        builder: (context) => ShopkeeperDashboard()),
                   );
                 },
                 child: Text("Select Shop"),

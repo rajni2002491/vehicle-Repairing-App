@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'user_form.dart';
 
 class MapScreen extends StatefulWidget {
   final String selectedVehicle;
@@ -64,10 +65,38 @@ class _MapScreenState extends State<MapScreen> {
               height: 50,
               child: Card(
                 color: const Color.fromARGB(255, 88, 163, 224),
-                  child: Text(
-                '   search Nearest Service Shopes   ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                      10.0), // Adds padding for a better layout
+                  child: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // Pushes items apart
+                    children: [
+                      Text(
+                        'Search Nearest Service Shops',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ServiceRequestScreen()),
+                      );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        child: Text(
+                          "Find",
+                          style: TextStyle(color: Colors.blue, fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
             TextField(
               decoration: InputDecoration(
