@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'passresetconfirmation.dart';
+import 'setpass_screen.dart';
 
 class EmailVerification extends StatelessWidget {
   const EmailVerification({super.key});
@@ -61,7 +61,7 @@ class EmailVerification extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ConfirmPassword(),
+                        builder: (context) => SetPassword (),
                       ),
                     );
                 },
