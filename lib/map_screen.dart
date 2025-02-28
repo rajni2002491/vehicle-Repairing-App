@@ -53,11 +53,17 @@ class MapScreenState extends State<MapScreen> {
             Container(
               height: 250,
               width: double.infinity,
-              color: Colors.blue,
-              child: Image.asset(
-                getVehicleImage(widget.selectedVehicle),
-                height: 100,
-                fit: BoxFit.cover,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20), // Curves the container
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20), // Curves the image
+                child: Image.asset(
+                  getVehicleImage(widget.selectedVehicle),
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -82,15 +88,18 @@ class MapScreenState extends State<MapScreen> {
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RepairShopsScreen()),
-                      );
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RepairShopsScreen()),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white),
                         child: Text(
                           "Find",
-                          style: TextStyle(color: const Color.fromARGB(255, 6, 6, 6), fontSize: 14),
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 6, 6, 6),
+                              fontSize: 14),
                         ),
                       ),
                     ],
