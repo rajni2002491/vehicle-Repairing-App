@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bokking_system.dart';
-import 'package:flutter_application_1/shope_dashbord.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'bokking_system.dart';
 
 class MapScreen extends StatefulWidget {
   final String selectedVehicle;
   const MapScreen({super.key, this.selectedVehicle = 'defaultVehicle'});
 
   @override
-  _MapScreenState createState() => _MapScreenState();
+  MapScreenState createState() => MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class MapScreenState extends State<MapScreen> {
   LatLng myCurrentLocation = const LatLng(22.8046, 86.2029);
 
   // Function to get image based on selected vehicle

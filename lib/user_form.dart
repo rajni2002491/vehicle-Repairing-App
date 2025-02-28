@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/shope_dashbord.dart';
-import 'shope_dashbord.dart';
 class ServiceRequestScreen extends StatefulWidget {
   const ServiceRequestScreen({super.key});
 
   @override
-  _ServiceRequestScreenState createState() => _ServiceRequestScreenState();
+  ServiceRequestScreenState createState() => ServiceRequestScreenState();
 }
 
-class _ServiceRequestScreenState extends State<ServiceRequestScreen> {
+class ServiceRequestScreenState extends State<ServiceRequestScreen> {
   final TextEditingController _problemController = TextEditingController();
 
   @override

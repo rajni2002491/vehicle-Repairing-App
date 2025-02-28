@@ -7,10 +7,10 @@ class VehicleScreen extends StatefulWidget {
   const VehicleScreen({super.key, required this.userName});
 
   @override
-  _VehicleScreenState createState() => _VehicleScreenState();
+  VehicleScreenState createState() => VehicleScreenState();
 }
 
-class _VehicleScreenState extends State<VehicleScreen> {
+class VehicleScreenState extends State<VehicleScreen> {
   String _selectedVehicle = "Bike"; // Default selection
 
   final List<Map<String, dynamic>> vehicles = [
