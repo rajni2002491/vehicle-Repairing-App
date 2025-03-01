@@ -15,6 +15,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false; // Track password visibility
 
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 80),
+
+            // Email Input Field
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -48,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                controller: _emailController, // Capture user input
                 decoration: InputDecoration(
                   hintText: 'Enter your email',
                   border: OutlineInputBorder(),
@@ -55,6 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 20),
+
+            // Password Input Field
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -65,6 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+                controller: _passwordController, // Capture password input
                 obscureText: !_isPasswordVisible, // Control password visibility
                 decoration: InputDecoration(
                   hintText: 'Enter your password',
@@ -77,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: () {
                       setState(() {
-                        _isPasswordVisible = !_isPasswordVisible; // Toggle state
+                        _isPasswordVisible =
+                            !_isPasswordVisible; // Toggle state
                       });
                     },
                   ),
@@ -85,6 +95,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 5),
+
+            // Forgot Password
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
@@ -104,6 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+
+            // Login Button
             Center(
               child: SizedBox(
                 width: 350,
@@ -113,11 +127,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor: const Color.fromARGB(255, 92, 117, 225),
                   ),
                   onPressed: () {
+                    String userName = _emailController.text.isNotEmpty
+                        ? _emailController.text.split('@')[0]
+                        : "User"; // Extract username from email or use "User"
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              VehicleScreen(userName: 'Rajnikant')),
+                              VehicleScreen(userName: userName)),
                     );
                   },
                   child: Text(
@@ -130,6 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: Center(
@@ -140,6 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 20),
+
+            // Social Login Buttons
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -164,6 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
+
+            // Register Link
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: Center(

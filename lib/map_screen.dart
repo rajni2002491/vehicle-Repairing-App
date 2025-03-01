@@ -4,7 +4,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   final String selectedVehicle;
-  const MapScreen({super.key, this.selectedVehicle = 'defaultVehicle'});
+  final String userName; // ✅ Accept userName
+
+  const MapScreen({
+    super.key,
+    required this.selectedVehicle,
+    required this.userName,
+  });
 
   @override
   MapScreenState createState() => MapScreenState();
@@ -32,33 +38,34 @@ class MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Map')),
+      appBar: AppBar(title: Text('Map Screen')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Vehicle: ${widget.selectedVehicle} ',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  WidgetSpan(
-                    child: Icon(Icons.favorite, color: Colors.red, size: 28),
-                  ),
-                ],
-              ),
+            // Welcome Message
+            Text(
+              "Hello, ${widget.userName}!",
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10),
+
+            // Vehicle Display with Image
+            Text(
+              "Your Selected Vehicle: ${widget.selectedVehicle}",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+
             Container(
               height: 250,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.blue,
-                borderRadius: BorderRadius.circular(20), // Curves the container
+                borderRadius: BorderRadius.circular(20),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20), // Curves the image
+                borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
                   getVehicleImage(widget.selectedVehicle),
                   height: 100,
@@ -66,17 +73,18 @@ class MapScreenState extends State<MapScreen> {
                 ),
               ),
             ),
+
             SizedBox(height: 10),
+
+            // Search Service Shops Card
             SizedBox(
               height: 50,
               child: Card(
                 color: const Color.fromARGB(255, 88, 163, 224),
                 child: Padding(
-                  padding: const EdgeInsets.all(
-                      10.0), // Adds padding for a better layout
+                  padding: const EdgeInsets.all(10.0),
                   child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween, // Pushes items apart
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Search Nearest Service Shops',
@@ -107,6 +115,10 @@ class MapScreenState extends State<MapScreen> {
                 ),
               ),
             ),
+
+            SizedBox(height: 10),
+
+            // Search Location Input Field
             TextField(
               decoration: InputDecoration(
                 hintText: "Search location...",
@@ -115,19 +127,26 @@ class MapScreenState extends State<MapScreen> {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
             ),
+
             SizedBox(height: 10),
+
+            // Google Map Widget
             Expanded(
               child: GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: myCurrentLocation,
-                  zoom: 14.4746,
+                  zoom: 14.5,
                 ),
                 markers: {
                   Marker(
-                    markerId: MarkerId("Marker Id"),
+                    markerId: MarkerId("my_location"),
                     position: myCurrentLocation,
                     draggable: true,
-                    onDragEnd: (value) {},
+                    onDragEnd: (LatLng newPosition) {
+                      setState(() {
+                        myCurrentLocation = newPosition;
+                      });
+                    },
                   ),
                 },
               ),

@@ -29,24 +29,26 @@ class VehicleScreenState extends State<VehicleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Welcome, ${widget.userName}! ',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  WidgetSpan(
-                    child: Icon(Icons.favorite,
-                        color: Colors.red, size: 28), // Heart Icon
-                  ),
-                ],
-              ),
+            // Welcome Text with Heart Icon
+            Row(
+              children: [
+                Text(
+                  'Welcome, ${widget.userName}! ',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                Icon(Icons.favorite, color: Colors.red, size: 28),
+              ],
             ),
             SizedBox(height: 20),
-            Text("Choose Your Vehicle:",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
+            // Vehicle Selection Title
+            Text(
+              "Choose Your Vehicle:",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 20),
+
+            // Radio Button List for Vehicle Selection
             Column(
               children: vehicles.map((vehicle) {
                 return RadioListTile(
@@ -68,19 +70,24 @@ class VehicleScreenState extends State<VehicleScreen> {
               }).toList(),
             ),
             SizedBox(height: 30),
+
+            // Confirm Selection Button
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 92, 117, 225),
                 ),
                 onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MapScreen(
-                            selectedVehicle: _selectedVehicle),
+                  // ✅ Pass `userName` & `selectedVehicle` to `MapScreen`
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                        selectedVehicle: _selectedVehicle,
+                        userName: widget.userName,
                       ),
-                    );
+                    ),
+                  );
                 },
                 child: Text(
                   "Confirm Selection",
