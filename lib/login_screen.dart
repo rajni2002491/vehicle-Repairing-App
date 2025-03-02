@@ -13,7 +13,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isPasswordVisible = false; // Track password visibility
+  bool _isPasswordVisible = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -21,202 +21,188 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: CupertinoButton(
-          child: Icon(CupertinoIcons.back),
-          onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Login',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(height: 80),
-
-            // Email Input Field
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Email',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
-                controller: _emailController, // Capture user input
-                decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Password Input Field
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Password',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
-                controller: _passwordController, // Capture password input
-                obscureText: !_isPasswordVisible, // Control password visibility
-                decoration: InputDecoration(
-                  hintText: 'Enter your password',
-                  border: OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible =
-                            !_isPasswordVisible; // Toggle state
-                      });
-                    },
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 5),
-
-            // Forgot Password
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ForgotPasswordScreen()),
-                    );
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(fontSize: 15, color: Colors.blue),
-                  ),
-                ),
-              ),
-            ),
-
-            // Login Button
-            Center(
-              child: SizedBox(
-                width: 350,
-                height: 60,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 92, 117, 225),
-                  ),
-                  onPressed: () {
-                    String userName = _emailController.text.isNotEmpty
-                        ? _emailController.text.split('@')[0]
-                        : "User"; // Extract username from email or use "User"
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              VehicleScreen(userName: userName)),
-                    );
-                  },
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      color: const Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Center(
+      body: SafeArea( // Prevents overlap with notches/status bar
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 50), // Add space from the top
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(
-                  '-----------Or Register with-----------',
-                  style: TextStyle(fontSize: 15),
+                  'Login',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
+              SizedBox(height: 50), // Increased spacing after "Login"
 
-            // Social Login Buttons
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      // Handle Google signup logic
-                    },
-                    label: Image.asset('assets/google-logo.png', height: 29),
-                  ),
-                  SizedBox(width: 30),
-                  OutlinedButton.icon(
-                    onPressed: () {},
-                    label: Image.asset('assets/Facebook-logo.png', height: 27),
-                  ),
-                  SizedBox(width: 30),
-                  OutlinedButton.icon(
-                    onPressed: () {},
-                    label: Image.asset('assets/apple-logo.jpg', height: 34),
-                  ),
-                ],
+              // Email Input
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Email',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your email',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
 
-            // Register Link
-            Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Don't have an account? ",
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                    children: [
-                      TextSpan(
-                        text: 'Register',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => RegisterScreen()),
-                            );
-                          },
+              // Password Input
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Password',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: TextField(
+                  controller: _passwordController,
+                  obscureText: !_isPasswordVisible,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your password',
+                    border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                       ),
-                    ],
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 5),
+
+              // Forgot Password
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                      );
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(fontSize: 15, color: Colors.blue),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Login Button
+              Center(
+                child: SizedBox(
+                  width: 350,
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 92, 117, 225),
+                    ),
+                    onPressed: () {
+                      String userName = _emailController.text.isNotEmpty
+                          ? _emailController.text.split('@')[0]
+                          : "User";
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => VehicleScreen(userName: userName)),
+                      );
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Center(
+                  child: Text(
+                    '-----------Or Register with-----------',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+
+              // Social Login Buttons
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: () {},
+                      label: Image.asset('assets/google-logo.png', height: 29),
+                    ),
+                    SizedBox(width: 30),
+                    OutlinedButton.icon(
+                      onPressed: () {},
+                      label: Image.asset('assets/Facebook-logo.png', height: 27),
+                    ),
+                    SizedBox(width: 30),
+                    OutlinedButton.icon(
+                      onPressed: () {},
+                      label: Image.asset('assets/apple-logo.jpg', height: 34),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Register Link
+              Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Don't have an account? ",
+                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      children: [
+                        TextSpan(
+                          text: 'Register',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => RegisterScreen()),
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
