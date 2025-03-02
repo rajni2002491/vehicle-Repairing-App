@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_application_1/vehicle_screen.dart';
@@ -51,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: InputDecoration(
                     hintText: 'Enter your email',
                     border: OutlineInputBorder(),
+
                   ),
                 ),
               ),

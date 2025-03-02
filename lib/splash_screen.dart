@@ -11,7 +11,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Auto navigate after 5 seconds
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.push(
         // ignore: use_build_context_synchronously
         context,
@@ -52,8 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
-            CircularProgressIndicator(color: Colors.orangeAccent), // Loading effect
-            SizedBox(height: 40),
           ],
         ),
       ),
