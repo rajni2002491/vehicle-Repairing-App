@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/login_screen.dart';
+import 'package:flutter_application_1/logins/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -15,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.push(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => LoginScreen(userName: 'defaultUser')),
       );
     });
   }

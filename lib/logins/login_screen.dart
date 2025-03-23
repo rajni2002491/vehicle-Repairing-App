@@ -5,7 +5,7 @@ import 'register_screen.dart';
 import 'forgotpass_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, required String userName});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

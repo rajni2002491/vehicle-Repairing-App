@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'setpass_screen.dart';
+import 'logins/setpass_screen.dart';
 
 class EmailVerification extends StatelessWidget {
   const EmailVerification({super.key});

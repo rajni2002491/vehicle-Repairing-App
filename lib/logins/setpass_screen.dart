@@ -84,7 +84,8 @@ class SetPassword extends StatelessWidget {
                   // Send request
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    MaterialPageRoute(builder: (context) => LoginScreen(userName: 'defaultUser')
+                    ),
                   );
                 },
                 child: Text('Submit',style: TextStyle(fontSize: 20,color: Colors.white),),
