@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(width: 30),
                     OutlinedButton.icon(
                       onPressed: () {},
-                      label: Image.asset('assets/apple-logo.jpg', height: 34),
+                      label: Image.asset('assets/Apple-Logo.png', height: 25),
                     ),
                   ],
                 ),
