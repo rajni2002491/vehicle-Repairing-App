@@ -35,10 +35,10 @@ class MaterialHomePage extends StatelessWidget {
                         borderSide: BorderSide(
                           style: BorderStyle.solid,
                         ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                        //borderRadius: BorderRadius.all(
+                          //Radius.circular(10),
                         ))),
-              ),
+              //),
             ],
           ),
         ));

@@ -62,10 +62,10 @@ class MapScreenState extends State<MapScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.blue,
-                borderRadius: BorderRadius.circular(20),
+               // borderRadius: BorderRadius.circular(20),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+               // borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
                   getVehicleImage(widget.selectedVehicle),
                   height: 100,
@@ -123,8 +123,9 @@ class MapScreenState extends State<MapScreen> {
               decoration: InputDecoration(
                 hintText: "Search location...",
                 prefixIcon: Icon(Icons.search, color: Colors.blue),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                border: OutlineInputBorder(
+                 // borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
 
