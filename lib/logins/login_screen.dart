@@ -20,58 +20,60 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // User sign-in method
   void signUserIn() async {
-  // Show loading dialog
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return const Center(child: CircularProgressIndicator());
-    },
-  );
-
-  try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text.trim(),
-      password: passwordController.text.trim(),
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return const Center(child: CircularProgressIndicator());
+      },
     );
 
-    // Close loading dialog
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Close loading dialog
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      // Navigate to VehicleScreen if login is successful
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const VehicleScreen(
+            userName: 'user',
+            selectedVehicle: '',
+          ),
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login Successful')),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Close dialog on error
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      String errorMessage;
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password provided for that user.';
+      } else {
+        errorMessage = e.message ?? 'An unknown error occurred.';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
     }
-
-    // Navigate to VehicleScreen if login is successful
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const VehicleScreen(userName: 'user', selectedVehicle: '',),
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login Successful')),
-    );
-  } on FirebaseAuthException catch (e) {
-    // Close dialog on error
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
-
-    String errorMessage;
-    if (e.code == 'user-not-found') {
-      errorMessage = 'No user found for that email.';
-    } else if (e.code == 'wrong-password') {
-      errorMessage = 'Wrong password provided for that user.';
-    } else {
-      errorMessage = e.message ?? 'An unknown error occurred.';
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(errorMessage)),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-
+              SizedBox(height: 50),
               // Login Button
               Center(
                 child: SizedBox(
@@ -195,13 +197,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 120),
-              
+              const SizedBox(height: 80),
+              Row(
+                children: [
+                  SizedBox(width: 70),
+                  Text(
+                    '   -------- Login With --------',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: ()=>AuthService().SignInWithGoogle(),
+                    onPressed: () => AuthService().SignInWithGoogle(),
                     label: Image.asset('assets/google-logo.png', height: 25),
                   ),
                   SizedBox(width: 20), // Adjust the width as needed
@@ -220,25 +231,27 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 children: [
                   SizedBox(width: 60),
-                     Text(
-                      'Don\'t have an account?',
-                      style: TextStyle(fontSize: 18, color: const Color.fromARGB(255, 0, 0, 0)),
+                  Text(
+                    'Don\'t have an account?',
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: const Color.fromARGB(255, 0, 0, 0)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const RegisterScreen(userName: 'user'),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: 18, color: Colors.blue),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterScreen(userName: 'user'),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 18, color: Colors.blue),
-                      ),
-                    ),
-                  
+                  ),
                 ],
               ),
             ],
