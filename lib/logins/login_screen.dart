@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/logins/register_screen.dart';
-import 'package:flutter_application_1/services/auth_service.dart';
+import 'package:flutter_application_1/services/google_auth_service.dart';
 import 'package:flutter_application_1/vehicle_screen.dart';
 import 'forgotpass_screen.dart';
 
@@ -20,60 +20,59 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // User sign-in method
   void signUserIn() async {
-    // Show loading dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return const Center(child: CircularProgressIndicator());
-      },
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return const Center(child: CircularProgressIndicator());
+    },
+  );
+
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
     );
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+    // Extract username from email
+    String userName = emailController.text.split('@')[0];
 
-      // Close loading dialog
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-
-      // Navigate to VehicleScreen if login is successful
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const VehicleScreen(
-            userName: 'user',
-            selectedVehicle: '',
-          ),
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login Successful')),
-      );
-    } on FirebaseAuthException catch (e) {
-      // Close dialog on error
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-
-      String errorMessage;
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password provided for that user.';
-      } else {
-        errorMessage = e.message ?? 'An unknown error occurred.';
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
     }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VehicleScreen(
+          userName: userName,
+          selectedVehicle: '',
+        ),
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Login Successful')),
+    );
+  } on FirebaseAuthException catch (e) {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+
+    String errorMessage;
+    if (e.code == 'user-not-found') {
+      errorMessage = 'No user found for that email.';
+    } else if (e.code == 'wrong-password') {
+      errorMessage = 'Wrong password provided for that user.';
+    } else {
+      errorMessage = e.message ?? 'An unknown error occurred.';
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {

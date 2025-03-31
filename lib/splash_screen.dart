@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter_application_1/logins/login_screen.dart';
 import 'package:lottie/lottie.dart'; // Import the lottie package
-import 'logins/auth_page.dart'; // Import the AuthPage
+// Import the AuthPage
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
