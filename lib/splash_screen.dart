@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter_application_1/logins/login_screen.dart';
 import 'package:lottie/lottie.dart'; // Import the lottie package
 import 'logins/auth_page.dart'; // Import the AuthPage
 
@@ -18,7 +19,7 @@ class SplashScreen extends StatelessWidget {
          // Correct path to the animation
        ),
       ),
-      nextScreen: const AuthPage( userName: 'user',), // Navigate to AuthPage
+      nextScreen: const LoginScreen( userName: 'user',), // Navigate to AuthPage
       splashTransition: SplashTransition.fadeTransition,
       duration: 3500,
       backgroundColor: Colors.white, // Only one backgroundColor

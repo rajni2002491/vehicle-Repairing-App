@@ -44,10 +44,7 @@ class MapScreenState extends State<MapScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen(userName: 'user')),
-            );
+            Navigator.pop(context); // Go back to the previous screen
           },
         ),
       ),
@@ -74,10 +71,10 @@ class MapScreenState extends State<MapScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.blue,
-               // borderRadius: BorderRadius.circular(20),
+                // borderRadius: BorderRadius.circular(20),
               ),
               child: ClipRRect(
-               // borderRadius: BorderRadius.circular(20),
+                // borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
                   getVehicleImage(widget.selectedVehicle),
                   height: 100,
@@ -136,8 +133,8 @@ class MapScreenState extends State<MapScreen> {
                 hintText: "Search location...",
                 prefixIcon: Icon(Icons.search, color: Colors.blue),
                 border: OutlineInputBorder(
-                 // borderRadius: BorderRadius.circular(10),
-                ),
+                    // borderRadius: BorderRadius.circular(10),
+                    ),
               ),
             ),
 

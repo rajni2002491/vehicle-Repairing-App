@@ -1,73 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/verifyforgotemail.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/logins/verifyforgotemail.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
+
+  @override
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
+
+  Future<void> resetPassword() async {
+    if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email')),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _emailController.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password reset email sent! Check your inbox.')),
+      );
+
+      // Navigate to a confirmation screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const EmailVerification()),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.message}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: const Text('Forgot Password')),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Aligns children to the left
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0), // Add padding
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
                 'Forgot Password',
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.left, // Aligns text within the Text widget
               ),
             ),
-            SizedBox(height: 10),
-            Padding(
+            const SizedBox(height: 10),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Please enter your email to reset the password',
-                textAlign: TextAlign.left, // Aligns text within the Text widget
-              ),
+              child: Text('Please enter your email to receive a password reset link.'),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                'Your Email',
-                textAlign: TextAlign.left, // Align text to the left
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Card(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Enter your email',
-                    border: OutlineInputBorder(),
-                  ),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your email',
+                  border: OutlineInputBorder(),
                 ),
               ),
             ),
-            SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 92, 117, 225),
                 ),
-                onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EmailVerification(),
-                      ),
-                    );
-                },
-                child: Text(
+                onPressed: resetPassword,
+                child: const Text(
                   "Reset Password",
                   style: TextStyle(color: Colors.white),
                 ),

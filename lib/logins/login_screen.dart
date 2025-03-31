@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/logins/register_screen.dart';
+import 'package:flutter_application_1/services/auth_service.dart';
 import 'package:flutter_application_1/vehicle_screen.dart';
 import 'forgotpass_screen.dart';
 
@@ -18,36 +20,58 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // User sign-in method
   void signUserIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      setState(() {
-        errorMessage = '';
-      });
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const VehicleScreen(userName: 'user')),
-      );
-    } catch (e) {
-      if (e is FirebaseAuthException) {
-        switch (e.code) {
-          case 'user-not-found':
-            setState(() => errorMessage = 'No user found for that email.');
-            break;
-          case 'wrong-password':
-            setState(() => errorMessage = 'Incorrect password. Please try again.');
-            break;
-          case 'invalid-email':
-            setState(() => errorMessage = 'Invalid email format.');
-            break;
-          default:
-            setState(() => errorMessage = e.message ?? 'An error occurred. Please try again.');
-        }
-      }
+  // Show loading dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return const Center(child: CircularProgressIndicator());
+    },
+  );
+
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+
+    // Close loading dialog
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
     }
+
+    // Navigate to VehicleScreen if login is successful
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const VehicleScreen(userName: 'user', selectedVehicle: '',),
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Login Successful')),
+    );
+  } on FirebaseAuthException catch (e) {
+    // Close dialog on error
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+
+    String errorMessage;
+    if (e.code == 'user-not-found') {
+      errorMessage = 'No user found for that email.';
+    } else if (e.code == 'wrong-password') {
+      errorMessage = 'Wrong password provided for that user.';
+    } else {
+      errorMessage = e.message ?? 'An unknown error occurred.';
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -137,7 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordScreen()),
                       );
                     },
                     child: const Text(
@@ -167,6 +194,52 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: 120),
+              
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  OutlinedButton.icon(
+                    onPressed: ()=>AuthService().SignInWithGoogle(),
+                    label: Image.asset('assets/google-logo.png', height: 25),
+                  ),
+                  SizedBox(width: 20), // Adjust the width as needed
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    label: Image.asset('assets/Apple-Logo.png', height: 25),
+                  ),
+                  SizedBox(width: 20),
+                  OutlinedButton.icon(
+                    onPressed: () {},
+                    label: Image.asset('assets/Facebook-logo.png', height: 25),
+                  ),
+                ],
+              ),
+              SizedBox(height: 50),
+              Row(
+                children: [
+                  SizedBox(width: 60),
+                     Text(
+                      'Don\'t have an account?',
+                      style: TextStyle(fontSize: 18, color: const Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterScreen(userName: 'user'),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(fontSize: 18, color: Colors.blue),
+                      ),
+                    ),
+                  
+                ],
               ),
             ],
           ),

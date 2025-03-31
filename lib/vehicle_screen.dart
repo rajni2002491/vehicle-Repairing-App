@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/logins/login_screen.dart';
 import 'package:flutter_application_1/map_screen.dart';
 
 class VehicleScreen extends StatefulWidget {
   final String userName;
 
-  const VehicleScreen({super.key, required this.userName});
+  const VehicleScreen(
+      {super.key, required this.userName, required String selectedVehicle});
 
   @override
   VehicleScreenState createState() => VehicleScreenState();
@@ -23,7 +25,18 @@ class VehicleScreenState extends State<VehicleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User Profile')),
+      appBar: AppBar(
+        title: const Text('Map Screen'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen(userName: 'user')),
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
