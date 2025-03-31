@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bokking_system.dart';
+import 'package:flutter_application_1/logins/login_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   final String selectedVehicle;
-  final String userName; // ✅ Accept userName
+  final String userName; //  Accept userName
 
   const MapScreen({
     super.key,
@@ -38,7 +39,18 @@ class MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Map Screen')),
+      appBar: AppBar(
+        title: const Text('Map Screen'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen(userName: 'user')),
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
