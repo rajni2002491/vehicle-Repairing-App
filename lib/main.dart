@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Import your LoginScreen file
-
+import 'splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+   Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(), // Set LoginScreen as the first screen
+      home: SplashScreen(), 
     );
   }
 }

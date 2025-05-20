@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/logins/login_screen.dart';
 import 'package:flutter_application_1/map_screen.dart';
 
 class VehicleScreen extends StatefulWidget {
   final String userName;
 
-  VehicleScreen({required this.userName});
+  const VehicleScreen(
+      {super.key, required this.userName, required String selectedVehicle});
 
   @override
-  _VehicleScreenState createState() => _VehicleScreenState();
+  VehicleScreenState createState() => VehicleScreenState();
 }
 
-class _VehicleScreenState extends State<VehicleScreen> {
+class VehicleScreenState extends State<VehicleScreen> {
   String _selectedVehicle = "Bike"; // Default selection
 
   final List<Map<String, dynamic>> vehicles = [
@@ -23,30 +25,43 @@ class _VehicleScreenState extends State<VehicleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User Profile')),
+      appBar: AppBar(
+        title: const Text('Map Screen'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen(userName: 'user')),
+            );
+          },
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Welcome, ${widget.userName}! ',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  WidgetSpan(
-                    child: Icon(Icons.favorite,
-                        color: Colors.red, size: 28), // Heart Icon
-                  ),
-                ],
-              ),
+            // Welcome Text with Heart Icon
+            Row(
+              children: [
+                Text(
+                  'Welcome, ${widget.userName}! ',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                Icon(Icons.favorite, color: Colors.red, size: 28),
+              ],
             ),
             SizedBox(height: 20),
-            Text("Choose Your Vehicle:",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
+            // Vehicle Selection Title
+            Text(
+              "Choose Your Vehicle:",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             SizedBox(height: 20),
+
+            // Radio Button List for Vehicle Selection
             Column(
               children: vehicles.map((vehicle) {
                 return RadioListTile(
@@ -68,27 +83,24 @@ class _VehicleScreenState extends State<VehicleScreen> {
               }).toList(),
             ),
             SizedBox(height: 30),
+
+            // Confirm Selection Button
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 92, 117, 225),
                 ),
                 onPressed: () {
-                  if (_selectedVehicle != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MapScreen(
-                            selectedVehicle: _selectedVehicle),
+                  // ✅ Pass `userName` & `selectedVehicle` to `MapScreen`
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                        selectedVehicle: _selectedVehicle,
+                        userName: widget.userName,
                       ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text(
-                              "Please select a vehicle before proceeding.")),
-                    );
-                  }
+                    ),
+                  );
                 },
                 child: Text(
                   "Confirm Selection",

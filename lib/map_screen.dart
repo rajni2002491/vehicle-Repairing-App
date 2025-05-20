@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
-import 'bokking_system.dart';
+import 'package:flutter_application_1/bokking_system.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapScreen extends StatelessWidget {
+class MapScreen extends StatefulWidget {
   final String selectedVehicle;
-  MapScreen({this.selectedVehicle = 'defaultVehicle'});
+  final String userName; //  Accept userName
+
+  const MapScreen({
+    super.key,
+    required this.selectedVehicle,
+    required this.userName,
+  });
+
+  @override
+  MapScreenState createState() => MapScreenState();
+}
+
+class MapScreenState extends State<MapScreen> {
+  LatLng myCurrentLocation = const LatLng(22.8046, 86.2029);
 
   // Function to get image based on selected vehicle
   String getVehicleImage(String vehicle) {
@@ -17,94 +31,133 @@ class MapScreen extends StatelessWidget {
       case 'truck':
         return 'assets/truck_logo.png';
       default:
-        return 'assets/default_vehicle.png'; // Default image
+        return 'assets/default_vehicle.png';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Map')),
+      appBar: AppBar(
+        title: const Text('Map Screen'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Vehicle: $selectedVehicle ',
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                          ),
-                          WidgetSpan(
-                            child: Icon(Icons.favorite, color: Colors.red, size: 28),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 300,
-                      width: double.infinity,
-                      color: Colors.blue,
-                      child: Image.asset(
-                        getVehicleImage(selectedVehicle), // Dynamic image
-                        height: 100,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      height: 60,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Search location...",
-                          prefixIcon: Icon(Icons.search, color: Colors.blue),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        OutlinedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => RepairShopsScreen()),
-                            );
-                          },
-                          child: Text('Home'),
-                        ),
-                        OutlinedButton(
-                          onPressed: () {},
-                          child: Text('Work'),
-                        ),
-                        OutlinedButton(
-                          onPressed: () {},
-                          child: Text('Saved'),
-                        ),
-                      ],
-                    ),
-                  ],
+            // Welcome Message
+            Text(
+              "Hello, ${widget.userName}!",
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+
+            // Vehicle Display with Image
+            Text(
+              "Your Selected Vehicle: ${widget.selectedVehicle}",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+
+            Container(
+              height: 250,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                // borderRadius: BorderRadius.circular(20),
+              ),
+              child: ClipRRect(
+                // borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  getVehicleImage(widget.selectedVehicle),
+                  height: 100,
+                  fit: BoxFit.cover,
                 ),
+              ),
+            ),
+
+            SizedBox(height: 10),
+
+            // Search Service Shops Card
+            SizedBox(
+              height: 50,
+              child: Card(
+                color: const Color.fromARGB(255, 88, 163, 224),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Search Nearest Service Shops',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RepairShopsScreen()),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white),
+                        child: Text(
+                          "Find",
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 6, 6, 6),
+                              fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 10),
+
+            // Search Location Input Field
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Search location...",
+                prefixIcon: Icon(Icons.search, color: Colors.blue),
+                border: OutlineInputBorder(
+                    // borderRadius: BorderRadius.circular(10),
+                    ),
+              ),
+            ),
+
+            SizedBox(height: 10),
+
+            // Google Map Widget
+            Expanded(
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: myCurrentLocation,
+                  zoom: 14.5,
+                ),
+                markers: {
+                  Marker(
+                    markerId: MarkerId("my_location"),
+                    position: myCurrentLocation,
+                    draggable: true,
+                    onDragEnd: (LatLng newPosition) {
+                      setState(() {
+                        myCurrentLocation = newPosition;
+                      });
+                    },
+                  ),
+                },
               ),
             ),
           ],
