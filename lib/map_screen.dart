@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'bokking_system.dart';
+import 'user_form.dart';
 
 class MapScreen extends StatefulWidget {
   final String selectedVehicle;
@@ -16,20 +17,74 @@ class _MapScreenState extends State<MapScreen> {
   // Hardcoded list of nearby repair shops
   final List<Map<String, dynamic>> _repairShops = [
     {
-      'name': 'AutoFix Garage',
-      'position': LatLng(20.2968, 85.8240),
+      "name": "AutoFix Garage",
+      "distance": "1.2 km",
+      "rating": "4.5",
+      "responseTime": "15 min",
+      "position": LatLng(20.2985, 85.8259),
     },
     {
-      'name': 'Speedy Service Station',
-      'position': LatLng(20.2985, 85.8265),
+      "name": "Speedy Repairs",
+      "distance": "2.5 km",
+      "rating": "4.3",
+      "responseTime": "20 min",
+      "position": LatLng(20.2950, 85.8280),
     },
     {
-      'name': 'Smart Auto Repairs',
-      'position': LatLng(20.2998, 85.8222),
+      "name": "Quick Auto Care",
+      "distance": "3.0 km",
+      "rating": "4.7",
+      "responseTime": "10 min",
+      "position": LatLng(20.2940, 85.8215),
     },
     {
-      'name': 'Mechanic Pro Workshop',
-      'position': LatLng(20.2950, 85.8205),
+      "name": "Rapid Auto Solutions",
+      "distance": "1.8 km",
+      "rating": "4.6",
+      "responseTime": "12 min",
+      "position": LatLng(20.2992, 85.8220),
+    },
+    {
+      "name": "Elite Car Repair",
+      "distance": "4.1 km",
+      "rating": "4.2",
+      "responseTime": "25 min",
+      "position": LatLng(20.3005, 85.8301),
+    },
+    {
+      "name": "Express Auto Fix",
+      "distance": "2.2 km",
+      "rating": "4.8",
+      "responseTime": "8 min",
+      "position": LatLng(20.2928, 85.8265),
+    },
+    {
+      "name": "ProMechanic Hub",
+      "distance": "3.5 km",
+      "rating": "4.4",
+      "responseTime": "18 min",
+      "position": LatLng(20.2972, 85.8199),
+    },
+    {
+      "name": "FastTrack Repairs",
+      "distance": "5.0 km",
+      "rating": "4.0",
+      "responseTime": "30 min",
+      "position": LatLng(20.3010, 85.8170),
+    },
+    {
+      "name": "Reliable Auto Service",
+      "distance": "2.0 km",
+      "rating": "4.9",
+      "responseTime": "7 min",
+      "position": LatLng(20.2936, 85.8290),
+    },
+    {
+      "name": "City Auto Clinic",
+      "distance": "3.8 km",
+      "rating": "4.1",
+      "responseTime": "22 min",
+      "position": LatLng(20.2966, 85.8333),
     },
   ];
 
@@ -63,20 +118,15 @@ class _MapScreenState extends State<MapScreen> {
         (shop) => Marker(
           markerId: MarkerId(shop['name']),
           position: shop['position'],
-          infoWindow: InfoWindow(
-            title: shop['name'],
-            onTap: () {
-              // Navigate to RepairShopsScreen when marker tapped
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => RepairShopsScreen(
-                    shopName: shop['name'],
-                  ),
-                ),
-              );
-            },
-          ),
+          infoWindow: InfoWindow(title: shop['name']),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ServiceRequestScreen(),
+              ),
+            );
+          },
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         ),
       ),
@@ -123,6 +173,22 @@ class _MapScreenState extends State<MapScreen> {
                   zoomControlsEnabled: true,
                   markers: markers,
                 ),
+              ),
+            ),
+            SizedBox(height: 10),
+            // Nearby shops button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => RepairShopsScreen()),
+                  );
+                },
+                icon: Icon(Icons.store_mall_directory_outlined),
+                label: Text('Nearby Shops'),
               ),
             ),
             SizedBox(height: 20),
