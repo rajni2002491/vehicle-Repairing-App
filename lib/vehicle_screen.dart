@@ -4,9 +4,10 @@ import 'package:flutter_application_1/map_screen.dart';
 class VehicleScreen extends StatefulWidget {
   final String userName;
 
-  VehicleScreen({required this.userName});
+  const VehicleScreen({super.key, required this.userName});
 
   @override
+  // ignore: library_private_types_in_public_api
   _VehicleScreenState createState() => _VehicleScreenState();
 }
 
@@ -74,22 +75,14 @@ class _VehicleScreenState extends State<VehicleScreen> {
                   backgroundColor: const Color.fromARGB(255, 92, 117, 225),
                 ),
                 onPressed: () {
-                  if (_selectedVehicle != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MapScreen(
-                            selectedVehicle: _selectedVehicle),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text(
-                              "Please select a vehicle before proceeding.")),
-                    );
-                  }
-                },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                          selectedVehicle: _selectedVehicle),
+                    ),
+                  );
+                                },
                 child: Text(
                   "Confirm Selection",
                   style: TextStyle(color: Colors.white),

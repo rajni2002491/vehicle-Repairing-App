@@ -9,13 +9,6 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Text('Your Title'),
-        leading: CupertinoButton(
-          child: Icon(CupertinoIcons.back),
-          onPressed: () {
-            // Navigator.pop(context); // Go back to the previous screen
-          },
-        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
