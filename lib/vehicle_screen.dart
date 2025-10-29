@@ -24,7 +24,10 @@ class _VehicleScreenState extends State<VehicleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User Profile')),
+      appBar: AppBar(
+        title: Text('User Profile'),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -78,11 +81,11 @@ class _VehicleScreenState extends State<VehicleScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MapScreen(
-                          selectedVehicle: _selectedVehicle),
+                      builder: (context) =>
+                          MapScreen(selectedVehicle: _selectedVehicle),
                     ),
                   );
-                                },
+                },
                 child: Text(
                   "Confirm Selection",
                   style: TextStyle(color: Colors.white),

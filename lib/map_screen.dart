@@ -12,6 +12,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  // ignore: unused_field
   late GoogleMapController _mapController;
 
   // Hardcoded list of nearby repair shops
