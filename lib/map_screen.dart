@@ -187,8 +187,14 @@ class _MapScreenState extends State<MapScreen> {
                         builder: (context) => RepairShopsScreen()),
                   );
                 },
-                icon: Icon(Icons.store_mall_directory_outlined),
-                label: Text('Nearby Shops'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                icon: Icon(Icons.store_mall_directory_outlined, color: Colors.white),
+                label: Text('Nearby Shops', style: TextStyle(color: Colors.white)),
               ),
             ),
             SizedBox(height: 20),
