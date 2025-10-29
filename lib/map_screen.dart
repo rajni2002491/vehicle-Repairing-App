@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'bokking_system.dart';
 
 class MapScreen extends StatelessWidget {
@@ -38,10 +39,12 @@ class MapScreen extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: 'Vehicle: $selectedVehicle ',
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 28, fontWeight: FontWeight.bold),
                           ),
                           WidgetSpan(
-                            child: Icon(Icons.favorite, color: Colors.red, size: 28),
+                            child: Icon(Icons.favorite,
+                                color: Colors.red, size: 28),
                           ),
                         ],
                       ),
@@ -80,6 +83,35 @@ class MapScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(height: 12),
+                    // Google Map (added after search field)
+                    Container(
+                      height: 300,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey[200],
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target:
+                              LatLng(20.2961, 85.8245), // Example: Bhubaneswar
+                          zoom: 12,
+                        ),
+                        mapType: MapType.normal,
+                        myLocationEnabled: false,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: true,
+                        markers: {
+                          Marker(
+                            markerId: MarkerId('center'),
+                            position: LatLng(20.2961, 85.8245),
+                            infoWindow: InfoWindow(title: 'Center'),
+                          ),
+                        },
+                      ),
+                    ),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -88,7 +120,8 @@ class MapScreen extends StatelessWidget {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => RepairShopsScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) => RepairShopsScreen()),
                             );
                           },
                           child: Text('Home'),
