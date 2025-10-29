@@ -4,6 +4,7 @@ import 'register_screen.dart';
 import 'vehicle_screen.dart';
 import 'forgot_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -77,6 +78,39 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } finally {
       if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _loginWithGoogle() async {
+    try {
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+      if (gUser == null) return; // User canceled
+
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (!mounted) return;
+      final user = FirebaseAuth.instance.currentUser;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => VehicleScreen(
+            userName: user?.displayName ?? user?.email?.split('@')[0] ?? 'User',
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google sign-in failed: $e')),
+      );
     }
   }
 
@@ -201,9 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(width: 10),
                 OutlinedButton.icon(
-                  onPressed: () {
-                    // Handle Google signup logic
-                  },
+                  onPressed: _loginWithGoogle,
                   label: Image.asset('assets/google-logo.png', height: 29),
                 ),
                 SizedBox(width: 30),
