@@ -1,15 +1,89 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter_application_1/vehicle_screen.dart';
 import 'register_screen.dart';
+import 'vehicle_screen.dart';
+import 'forgot_password_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _loading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter your email')),
+      );
+      return;
+    }
+    if (password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter your password')),
+      );
+      return;
+    }
+
+    setState(() => _loading = true);
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = FirebaseAuth.instance.currentUser;
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => VehicleScreen(
+            userName: user?.displayName ?? user?.email?.split('@')[0] ?? 'User',
+          ),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      String message = 'Login failed';
+      if (e.code == 'user-not-found') {
+        message = 'No user found with this email';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password';
+      } else if (e.code == 'invalid-email') {
+        message = 'Invalid email address';
+      } else if (e.code == 'user-disabled') {
+        message = 'This account has been disabled';
+      } else if (e.message != null) {
+        message = e.message!;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
         children: [
@@ -31,6 +105,8 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0), // Add padding
             child: TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 hintText: 'Enter your email',
                 border: OutlineInputBorder(),
@@ -48,10 +124,12 @@ class LoginScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0), // Add padding
             child: TextField(
+              controller: _passwordController,
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Enter your password',
                 border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.visibility_off),
+                suffixIcon: Icon(Icons.lock_outline),
               ),
             ),
           ),
@@ -60,9 +138,19 @@ class LoginScreen extends StatelessWidget {
             alignment: Alignment.centerRight, // Aligns text to the right
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Forgot Password?',
-                style: TextStyle(fontSize: 15, color: Colors.blue),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgotPasswordScreen(),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(fontSize: 15, color: Colors.blue),
+                ),
               ),
             ),
           ),
@@ -74,22 +162,24 @@ class LoginScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 92, 117, 225),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            VehicleScreen(userName: 'Rajnikant')),
-                  );
-                  // Handle signup logic
-                },
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    fontSize: 20,
-                  ),
-                ),
+                onPressed: _loading ? null : _login,
+                child: _loading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : Text(
+                        'Login',
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 20,
+                        ),
+                      ),
               ),
             ),
           ),

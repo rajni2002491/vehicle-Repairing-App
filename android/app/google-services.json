@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "265601522235",
+    "project_id": "vehicle-repair-3f81b",
+    "storage_bucket": "vehicle-repair-3f81b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265601522235:android:acb84bacebe244d8bb1a1e",
+        "android_client_info": {
+          "package_name": "com.vehicle.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB57NJuk1TDDb7xrNmEFDsHwh1vC6cTZqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
