@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'login_screen.dart';
+import 'vehicle_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -71,7 +71,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => LoginScreen()),
+        MaterialPageRoute(
+          builder: (_) => VehicleScreen(userName: username),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       String message = 'Sign up failed';
