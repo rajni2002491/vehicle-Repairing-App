@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/map_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'Auth/login_screen.dart';
 
 class VehicleScreen extends StatefulWidget {
   final String userName;
@@ -27,6 +29,20 @@ class _VehicleScreenState extends State<VehicleScreen> {
       appBar: AppBar(
         title: Text('User Profile'),
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            tooltip: 'Sign out',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
